@@ -1,16 +1,18 @@
 import React, { useEffect } from "react";
+import styles from "./styles.module.css";
+import { authStore } from "../../../pocketbase/auth";
+import useTheme from "../../../hooks/useTheme";
+import { Link } from "react-router-dom";
 import {
   HeartOutlined,
   UserOutlined,
   ShoppingCartOutlined,
+  HomeOutlined,
 } from "@ant-design/icons";
 import MoonIcon from "./icons/MoonIcon";
 import SunIcon from "./icons/SunIcon";
-import useTheme from "../../../hooks/useTheme";
 import { MenuProps } from "antd";
 import { Menu, Typography } from "antd";
-import styles from "./styles.module.css";
-import { authStore } from "../../../pocketbase/auth";
 import { lightAnimation, darkAnimation } from "./animations";
 
 const NavMenu: React.FC = () => {
@@ -40,6 +42,11 @@ const NavMenu: React.FC = () => {
       ),
       key: "brand",
       disabled: true,
+    },
+    {
+      label: <Link to={"/"}>Home</Link>,
+      key: "home",
+      icon: <HomeOutlined />,
     },
     {
       label: "Account",
@@ -76,7 +83,6 @@ const NavMenu: React.FC = () => {
 
     {
       label: <span>{themeMode == "dark" ? <MoonIcon /> : <SunIcon />}</span>,
-
       key: "theme",
     },
   ];

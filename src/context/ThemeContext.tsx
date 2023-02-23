@@ -1,12 +1,17 @@
 import React, { createContext, useReducer } from "react";
 
-type contextType = { themeMode: string; setTheme: (mode: string) => void };
+type ThemeMode = "light" | "dark";
+
+type contextType = {
+  themeMode: ThemeMode;
+  setTheme: (mode: ThemeMode) => void;
+};
 
 export const ThemeContext = createContext<contextType | null>(null);
 
 ThemeContext.displayName = "ThemeContext";
 
-const storeTheme = (mode: string) => {
+const storeTheme = (mode: ThemeMode) => {
   localStorage.setItem("theme", mode);
 };
 
@@ -14,7 +19,7 @@ const getStoredTheme = () => {
   return localStorage.getItem("theme");
 };
 
-const getSystemTheme = () => {
+const getSystemTheme = (): ThemeMode => {
   const mql = window.matchMedia("(prefers-color-scheme: dark)");
   return mql.matches ? "dark" : "light";
 };
@@ -29,7 +34,7 @@ const initialTheme = () => {
 };
 
 const reducer = (state: string, action: string) => {
-  storeTheme(action);
+  storeTheme(action as ThemeMode);
   return action;
 };
 
@@ -41,7 +46,9 @@ const ThemeContextProvider = ({ children }: props) => {
   const [state, dispatch] = useReducer(reducer, initialTheme());
 
   return (
-    <ThemeContext.Provider value={{ themeMode: state, setTheme: dispatch }}>
+    <ThemeContext.Provider
+      value={{ themeMode: state as ThemeMode, setTheme: dispatch }}
+    >
       {children}
     </ThemeContext.Provider>
   );

@@ -1,24 +1,5 @@
-:root {
-  --dark-bg-1: #121212;
-  --dark-text-1: #ececec;
-  --light-bg-1: #f8f9fa;
-  --light-text-1: #212529;
-}
-
-#root,
-#app,
-#layout {
-  height: 100%;
-}
-
-#app[data-theme="dark"] {
-  background-color: var(--dark-bg-1);
-  color: var(--dark-text-1);
-}
-
-#app[data-theme="light"] {
-  background-color: var(--light-bg-1);
-  color: var(--light-text-1);
+#root {
+  overflow: hidden;
 }
 
 #header {

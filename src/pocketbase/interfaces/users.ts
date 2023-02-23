@@ -1,4 +1,6 @@
-export interface User {
+import { Record } from "pocketbase";
+
+interface User {
   id: string;
   created: string;
   updated: string;
@@ -11,3 +13,5 @@ export interface User {
   name: string;
   avatar: string;
 }
+
+export type UserRecord = User | Record;
