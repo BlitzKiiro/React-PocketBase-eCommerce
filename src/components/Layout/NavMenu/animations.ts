@@ -9,7 +9,6 @@ const lightAnimation = () => {
     rotate: 180,
     duration: 1200,
   });
-  console.log("light anime");
 };
 // dark mode animation
 const darkAnimation = () => {
@@ -20,7 +19,6 @@ const darkAnimation = () => {
     rotate: [-180, 0],
     duration: 1200,
   });
-  console.log("dark anime");
 };
 
 export { lightAnimation, darkAnimation };

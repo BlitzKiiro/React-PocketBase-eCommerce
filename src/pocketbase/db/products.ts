@@ -8,9 +8,12 @@ const getProductThumb = (record: ProductRecord, filename: string): string => {
 
 export const getProductsList = async ({
   queryKey,
-}: QueryFunctionContext<[string, number]>) => {
+}: QueryFunctionContext<[string, number, string | null, string | null]>) => {
+  const sort = queryKey[2] ?? "-created";
+  const filter = queryKey[3] ? `categories~'${queryKey[3]}'` : "";
   const resultList = await pb.collection("products").getList(queryKey[1], 12, {
-    sort: "-created",
+    sort,
+    filter,
     expand: " categories",
   });
   const items: Array<ProductRecord> = resultList.items.map(

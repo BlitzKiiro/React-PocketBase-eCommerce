@@ -7,12 +7,24 @@ import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../../components/Products/Card";
 import LoadingProducts from "../../components/Products/Loading";
 import Paginator from "../../components/Products/Paginator";
+import { useSearchParams } from "react-router-dom";
+import ProductsFetchError from "../../components/Products/error";
 
 const { Title, Text } = Typography;
 
 const Home = () => {
   const [page, setPage] = useState(1);
-  const productsQuery = useQuery(["products", page], getProductsList);
+  let [searchParams] = useSearchParams();
+  let sort = searchParams.get("sort");
+  let filter = searchParams.get("category");
+  const productsQuery = useQuery(
+    ["products", page, sort, filter],
+    getProductsList
+  );
+
+  if (productsQuery.isError) {
+    return <ProductsFetchError />;
+  }
 
   return (
     <Row justify={"center"} className={styles.main} gutter={[0, 100]}>

@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./styles.module.css";
+import { Link } from "react-router-dom";
 import {
   ShoppingCartOutlined,
   SmileOutlined,
@@ -11,6 +12,7 @@ import {
 } from "@ant-design/icons";
 import type { MenuProps } from "antd";
 import { Menu, Typography } from "antd";
+import { useSearchParams } from "react-router-dom";
 
 const { Title } = Typography;
 
@@ -32,36 +34,66 @@ function getItem(
   } as MenuItem;
 }
 
-const items: MenuProps["items"] = [
-  getItem(
-    <Title level={5}>Categoris</Title>,
-    "categories",
-    <></>,
-    [
-      getItem("Supermarket", "supermarket", <ShoppingCartOutlined />),
-      getItem("Baby & Kids", "baby&kids", <SmileOutlined />),
-      getItem("Electronics", "electronics", <DesktopOutlined />),
-      getItem("Home & Kitchen", "home&kictchen", <HomeOutlined />),
-    ],
-    "group"
-  ),
-];
-
-const filterSortItems: MenuProps["items"] = [
-  getItem(<Title level={5}>Sorty by</Title>, "sort", <></>, [
-    getItem("newest", "-created", <CalendarOutlined />),
-    getItem("price: low to high", "+price", <PlusCircleOutlined />),
-    getItem("price: high to low ", "-price", <MinusCircleOutlined />),
+const categoriesItems: MenuProps["items"] = [
+  getItem(<Title level={5}>Categoris</Title>, "categories", <></>, [
+    getItem(
+      <Link to={"/products/?category=douimvzh13s6qcy"}>Supermarket</Link>,
+      "supermarket",
+      <ShoppingCartOutlined />
+    ),
+    getItem(
+      <Link to={"/products/?category=ek7dfcvvmjpfzxp"}>Baby and Kids</Link>,
+      "baby&kids",
+      <SmileOutlined />
+    ),
+    getItem(
+      <Link to={"/products/?category=qoivujk1nuq89tg"}>Electronics</Link>,
+      "electronics",
+      <DesktopOutlined />
+    ),
+    getItem(
+      <Link to={"/products/?category=0bepw8jk0z87yvz"}>Home and Kitchen</Link>,
+      "home&kitchen",
+      <HomeOutlined />
+    ),
   ]),
 ];
 
-const SideBar: React.FC = () => {
+const SideBar = () => {
+  let [searchParams] = useSearchParams();
+  let category = searchParams.get("category") ?? "";
+  const filterSortItems: MenuProps["items"] = [
+    getItem(<Title level={5}>Sorty by</Title>, "sort", <></>, [
+      getItem(
+        <Link to={`/products/?category=${category}&sort=-created`}>
+          Newest
+        </Link>,
+        "-created",
+        <CalendarOutlined />
+      ),
+      getItem(
+        <Link to={`/products/?category=${category}&sort=+price`}>
+          price: low to high
+        </Link>,
+        "+price",
+        <PlusCircleOutlined />
+      ),
+      getItem(
+        <Link to={`/products/?category=${category}&sort=-price`}>
+          price: high to low
+        </Link>,
+        "-price",
+        <MinusCircleOutlined />
+      ),
+    ]),
+  ];
+
   return (
     <Menu
       className={styles.sidbar}
-      defaultOpenKeys={["sort"]}
+      defaultOpenKeys={["sort", "categories"]}
       mode='inline'
-      items={[...items, ...filterSortItems]}
+      items={[...categoriesItems, ...filterSortItems]}
     />
   );
 };
