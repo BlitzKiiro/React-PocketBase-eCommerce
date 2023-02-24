@@ -1,28 +1,34 @@
 import React, { useEffect } from "react";
 import styles from "./styles.module.css";
-import { authStore } from "../../../pocketbase/auth";
+import { clearAuth, getAuthStatus } from "../../../pocketbase/auth";
 import useTheme from "../../../hooks/useTheme";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   HeartOutlined,
   UserOutlined,
   ShoppingCartOutlined,
   HomeOutlined,
+  LogoutOutlined,
 } from "@ant-design/icons";
 import MoonIcon from "./icons/MoonIcon";
 import SunIcon from "./icons/SunIcon";
 import { MenuProps } from "antd";
-import { Menu, Typography } from "antd";
+import { Menu, Typography, Badge } from "antd";
 import { lightAnimation, darkAnimation } from "./animations";
+
+const { Title, Text } = Typography;
 
 const NavMenu: React.FC = () => {
   const { themeMode, setTheme } = useTheme();
+  const navigate = useNavigate();
+  const toggleTheme = () => {
+    if (themeMode == "dark") setTheme("light");
+    else setTheme("dark");
+  };
 
-  const toggleTheme = ({ key }: { key: string }) => {
-    if (key === "theme") {
-      if (themeMode == "dark") setTheme("light");
-      else setTheme("dark");
-    }
+  const logOut = () => {
+    clearAuth();
+    navigate(0);
   };
 
   useEffect(() => {
@@ -37,7 +43,7 @@ const NavMenu: React.FC = () => {
     {
       label: (
         <div className={styles.brand}>
-          <Typography.Title level={4}>React eCommerce</Typography.Title>
+          <Title level={4}>React eCommerce</Title>
         </div>
       ),
       key: "brand",
@@ -48,28 +54,7 @@ const NavMenu: React.FC = () => {
       key: "home",
       icon: <HomeOutlined />,
     },
-    {
-      label: "Account",
-      key: "account",
-      icon: <UserOutlined />,
-      children: authStore.isValid
-        ? [
-            {
-              label: "Option 1",
-              key: "setting:1",
-            },
-            {
-              label: "Option 2",
-              key: "setting:2",
-            },
-          ]
-        : [
-            {
-              label: "Sign in",
-              key: "signin",
-            },
-          ],
-    },
+
     {
       label: "Wish List",
       key: "wish",
@@ -80,21 +65,48 @@ const NavMenu: React.FC = () => {
       key: "cart",
       icon: <ShoppingCartOutlined />,
     },
-
+    {
+      label: "Account",
+      key: "account",
+      icon: <UserOutlined />,
+      children: getAuthStatus()
+        ? [
+            {
+              label: "Logout",
+              icon: <LogoutOutlined />,
+              key: "logout1",
+              onClick: logOut,
+            },
+          ]
+        : [
+            {
+              label: (
+                <Link to={"/login"}>
+                  <Text strong>Log in</Text>
+                </Link>
+              ),
+              key: "login",
+            },
+            {
+              label: (
+                <Badge count='New here?' color='#13c2c2' offset={[45, 12]}>
+                  <Link to={"/register"}>
+                    <Text>Register</Text>
+                  </Link>
+                </Badge>
+              ),
+              key: "register",
+            },
+          ],
+    },
     {
       label: <span>{themeMode == "dark" ? <MoonIcon /> : <SunIcon />}</span>,
       key: "theme",
+      onClick: toggleTheme,
     },
   ];
 
-  return (
-    <Menu
-      onClick={toggleTheme}
-      className={styles.navmenu}
-      mode='horizontal'
-      items={items}
-    />
-  );
+  return <Menu className={styles.navmenu} mode='horizontal' items={items} />;
 };
 
 export default NavMenu;

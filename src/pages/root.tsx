@@ -16,7 +16,7 @@ const Root = () => {
         <Sider width={300} breakpoint='lg' collapsedWidth={0}>
           <SideBar />
         </Sider>
-        <Content id='content'>
+        <Content>
           <Outlet />
         </Content>
       </Layout>
