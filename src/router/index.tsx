@@ -14,10 +14,6 @@ import { useEffect } from "react";
 const AppRouter = () => {
   const { user } = useAuth();
 
-  useEffect(() => {
-    console.log(user);
-  }, [user]);
-
   const router = createBrowserRouter([
     {
       path: "/",

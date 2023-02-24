@@ -1,6 +1,7 @@
 import styles from "./styles.module.css";
 import { ProductRecord } from "../../../pocketbase/interfaces/products";
 import { Card, Typography, Row, Badge } from "antd";
+import { HeartOutlined } from "@ant-design/icons";
 
 const { Text, Paragraph } = Typography;
 

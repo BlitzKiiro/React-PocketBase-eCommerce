@@ -73,7 +73,7 @@ const SideBar = () => {
   let category = searchParams.get("category") ?? "";
   const filterSortItems: MenuProps["items"] = [
     getItem(
-      <Title level={5}>Sorty by</Title>,
+      <Title level={5}>Explore by</Title>,
       "sort",
       <></>,
       [
