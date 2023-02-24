@@ -2,9 +2,8 @@ import "./styles/globals.css";
 import "antd/dist/reset.css";
 import useTheme from "./hooks/useTheme";
 import { ConfigProvider, theme } from "antd";
-import { RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import router from "./router";
+import AppRouter from "./router";
 
 const antTheme = {
   dark: theme.darkAlgorithm,
@@ -19,7 +18,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ConfigProvider theme={{ algorithm }}>
-        <RouterProvider router={router} />
+        <AppRouter />
       </ConfigProvider>
     </QueryClientProvider>
   );

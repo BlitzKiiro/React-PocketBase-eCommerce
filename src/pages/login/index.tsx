@@ -13,23 +13,33 @@ import {
   Input,
   message,
 } from "antd";
+import { useMutation } from "@tanstack/react-query";
+import useAuth from "../../hooks/useAuth";
 
 const { Content } = Layout;
-const { Text, Title } = Typography;
+const { Title } = Typography;
 
 const LoginPage = () => {
-  const navigate = useNavigate();
-
-  const handleSumbit = async (values: { email: string; password: string }) => {
-    try {
-      await loginWithPassword(values.email, values.password);
-      console.log("authed");
-      navigate("/");
-    } catch (error) {
+  const { refetchUser } = useAuth();
+  const loginMutation = useMutation(loginWithPassword, {
+    onSuccess: () => {
+      refetchUser();
+    },
+    onError: (error: any) => {
       message.error({
-        content: "Wrong email or password",
+        content: error.message,
       });
-    }
+    },
+  });
+
+  const handleSumbit = ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
+    loginMutation.mutate({ email, password });
   };
 
   return (
@@ -93,11 +103,12 @@ const LoginPage = () => {
                         type='primary'
                         htmlType='submit'
                         className='login-form-button'
+                        loading={loginMutation.isLoading}
                       >
                         Log in
                       </Button>
                     </Form.Item>
-                    Or <Link to={"/register"}>Register Now</Link>
+                    Or <Link to={"/auth/register"}>Register Now</Link>
                   </Form>
                 </Row>
               </Col>

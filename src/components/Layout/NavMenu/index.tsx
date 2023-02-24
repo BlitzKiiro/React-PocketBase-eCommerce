@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import styles from "./styles.module.css";
-import { clearAuth, getAuthStatus } from "../../../pocketbase/auth";
+import { userLogOut, getCurrentUser } from "../../../pocketbase/auth";
 import useTheme from "../../../hooks/useTheme";
 import { Link, useNavigate } from "react-router-dom";
 import {
@@ -15,20 +15,22 @@ import SunIcon from "./icons/SunIcon";
 import { MenuProps } from "antd";
 import { Menu, Typography, Badge } from "antd";
 import { lightAnimation, darkAnimation } from "./animations";
+import useAuth from "../../../hooks/useAuth";
 
 const { Title, Text } = Typography;
 
 const NavMenu: React.FC = () => {
   const { themeMode, setTheme } = useTheme();
-  const navigate = useNavigate();
+  const { user, refetchUser } = useAuth();
+
   const toggleTheme = () => {
     if (themeMode == "dark") setTheme("light");
     else setTheme("dark");
   };
 
   const logOut = () => {
-    clearAuth();
-    navigate(0);
+    userLogOut();
+    refetchUser();
   };
 
   useEffect(() => {
@@ -69,7 +71,7 @@ const NavMenu: React.FC = () => {
       label: "Account",
       key: "account",
       icon: <UserOutlined />,
-      children: getAuthStatus()
+      children: user
         ? [
             {
               label: "Logout",
@@ -81,7 +83,7 @@ const NavMenu: React.FC = () => {
         : [
             {
               label: (
-                <Link to={"/login"}>
+                <Link to={"/auth/login"}>
                   <Text strong>Log in</Text>
                 </Link>
               ),
@@ -90,7 +92,7 @@ const NavMenu: React.FC = () => {
             {
               label: (
                 <Badge count='New here?' color='#13c2c2' offset={[45, 12]}>
-                  <Link to={"/register"}>
+                  <Link to={"/auth/register"}>
                     <Text>Register</Text>
                   </Link>
                 </Badge>

@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import coverImg from "../../assets/shopping wallpaper.jpg";
-import { Link, useNavigate } from "react-router-dom";
-import { registerWithPassword } from "../../pocketbase/auth";
+import { Link } from "react-router-dom";
+import { loginWithPassword, registerWithPassword } from "../../pocketbase/auth";
 import { LockOutlined, MailOutlined, UserOutlined } from "@ant-design/icons";
 import {
   Layout,
@@ -14,20 +14,37 @@ import {
   message,
 } from "antd";
 
+import useAuth from "../../hooks/useAuth";
+import { useMutation } from "@tanstack/react-query";
+
 const { Content } = Layout;
 const { Title } = Typography;
 
 const Register = () => {
-  const navigate = useNavigate();
-  const handleSumbit = async ({ name, email, password }: any) => {
-    try {
-      await registerWithPassword(name, email, password);
-      navigate("/");
-    } catch (error: any) {
+  const { refetchUser } = useAuth();
+
+  const register = async ({ name, email, password }: any) => {
+    await registerWithPassword({ name, email, password });
+    await loginWithPassword({ email, password });
+  };
+
+  const registerMutation = useMutation(register, {
+    onSuccess: () => {
+      refetchUser();
+    },
+    onError: (error: any) => {
       message.error({
         content: error.message,
       });
-    }
+    },
+  });
+
+  const handleSumbit = (values: {
+    name: string;
+    email: string;
+    password: string;
+  }) => {
+    registerMutation.mutate(values);
   };
 
   return (
@@ -105,11 +122,13 @@ const Register = () => {
                         type='primary'
                         htmlType='submit'
                         className='login-form-button'
+                        loading={registerMutation.isLoading}
                       >
-                        Log in
+                        Register
                       </Button>
                     </Form.Item>
-                    Or <Link to={"/register"}>Register Now</Link>
+                    Already have an account?{" "}
+                    <Link to={"/auth/login"}>Login</Link>
                   </Form>
                 </Row>
               </Col>

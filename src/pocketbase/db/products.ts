@@ -24,3 +24,14 @@ export const getProductsList = async ({
   );
   return { ...resultList, items };
 };
+
+export const getProdcutByID = async ({
+  queryKey,
+}: QueryFunctionContext<[string, string]>): Promise<ProductRecord> => {
+  const id = queryKey[1];
+  const record: ProductRecord = await pb.collection("products").getOne(id, {
+    expand: " categories",
+  });
+  record.img = getProductThumb(record, record.img);
+  return record;
+};

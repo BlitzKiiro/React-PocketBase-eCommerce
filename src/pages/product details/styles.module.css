@@ -1,0 +1,22 @@
+.main {
+  margin-top: 150px;
+  margin-bottom: 150px;
+  width: 95%;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  justify-items: end;
+  align-items: flex-end;
+  align-content: center;
+  gap: 10px;
+}
+.price {
+  font-weight: bold;
+  font-size: 35px;
+}
+
+.cart {
+  margin-top: 20px;
+}

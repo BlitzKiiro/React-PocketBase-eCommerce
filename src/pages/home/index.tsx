@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import { useState } from "react";
 import { ShopOutlined } from "@ant-design/icons";
-import { Typography, Row, Col, Pagination } from "antd";
+import { Typography, Row, Col } from "antd";
 import { getProductsList } from "../../pocketbase/db/products";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../../components/Products/Card";
@@ -9,6 +9,7 @@ import LoadingProducts from "../../components/Products/Loading";
 import Paginator from "../../components/Products/Paginator";
 import { useSearchParams } from "react-router-dom";
 import ProductsFetchError from "../../components/Products/error";
+import { Link } from "react-router-dom";
 
 const { Title, Text } = Typography;
 
@@ -44,7 +45,9 @@ const Home = () => {
           {productsQuery.data?.items.map((product, index) => {
             return (
               <Col key={index}>
-                <ProductCard product={product} />
+                <Link to={`/product/${product.id}`}>
+                  <ProductCard product={product} />
+                </Link>
               </Col>
             );
           })}

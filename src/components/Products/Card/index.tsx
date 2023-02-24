@@ -1,8 +1,7 @@
 import styles from "./styles.module.css";
 import { ProductRecord } from "../../../pocketbase/interfaces/products";
 import { Card, Typography, Row, Badge } from "antd";
-import { HeartOutlined } from "@ant-design/icons";
-const { Meta } = Card;
+
 const { Text, Paragraph } = Typography;
 
 interface propTypes {
@@ -30,7 +29,6 @@ const ProductCard = ({ product }: propTypes) => {
         </Paragraph>
         <Row justify={"space-between"}>
           <Text strong>EGP {product.price}</Text>
-          <HeartOutlined />
         </Row>
       </Card>
     </Badge.Ribbon>
