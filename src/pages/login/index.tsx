@@ -20,7 +20,7 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const LoginPage = () => {
-  const { refetchUser } = useAuth();
+  const { refreshUser: refetchUser } = useAuth();
   const loginMutation = useMutation(loginWithPassword, {
     onSuccess: () => {
       refetchUser();

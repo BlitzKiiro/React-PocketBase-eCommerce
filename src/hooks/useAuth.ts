@@ -1,9 +1,15 @@
 import { useQuery } from "@tanstack/react-query";
+import { useQueryClient } from "@tanstack/react-query";
 import { getCurrentUser } from "../pocketbase/auth";
 
 const useAuth = () => {
-  const { data, refetch } = useQuery(["user"], getCurrentUser);
-  return { user: data, refetchUser: refetch };
+  const queryClient = useQueryClient();
+  const { data } = useQuery(["user"], getCurrentUser);
+  const refreshUser = () => {
+    queryClient.invalidateQueries(["user"]);
+  };
+
+  return { user: data, refreshUser };
 };
 
 export default useAuth;

@@ -21,7 +21,7 @@ const { Title, Text } = Typography;
 
 const NavMenu: React.FC = () => {
   const { themeMode, setTheme } = useTheme();
-  const { user, refetchUser } = useAuth();
+  const { user, refreshUser: refetchUser } = useAuth();
 
   const toggleTheme = () => {
     if (themeMode == "dark") setTheme("light");

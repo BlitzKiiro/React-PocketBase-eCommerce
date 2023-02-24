@@ -21,7 +21,7 @@ const { Content } = Layout;
 const { Title } = Typography;
 
 const Register = () => {
-  const { refetchUser } = useAuth();
+  const { refreshUser: refetchUser } = useAuth();
 
   const register = async ({ name, email, password }: any) => {
     await registerWithPassword({ name, email, password });
