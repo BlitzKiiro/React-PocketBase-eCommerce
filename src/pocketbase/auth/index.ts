@@ -1,10 +1,6 @@
 import pb from "../config";
 
-const authStore = pb.authStore;
-
-export const getCurrentUser = () => {
-  return authStore.model;
-};
+export const authStore = pb.authStore;
 
 export const loginWithPassword = async ({
   email,
@@ -31,8 +27,4 @@ export const registerWithPassword = async ({
     password,
     passwordConfirm: password,
   });
-};
-
-export const userLogOut = () => {
-  authStore.clear();
 };

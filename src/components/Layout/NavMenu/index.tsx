@@ -1,8 +1,8 @@
 import React, { useEffect } from "react";
 import styles from "./styles.module.css";
-import { userLogOut, getCurrentUser } from "../../../pocketbase/auth";
+
 import useTheme from "../../../hooks/useTheme";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   HeartOutlined,
   UserOutlined,
@@ -21,7 +21,7 @@ const { Title, Text } = Typography;
 
 const NavMenu: React.FC = () => {
   const { themeMode, setTheme } = useTheme();
-  const { user, refreshUser: refetchUser } = useAuth();
+  const { user, clearUser } = useAuth();
 
   const toggleTheme = () => {
     if (themeMode == "dark") setTheme("light");
@@ -29,8 +29,7 @@ const NavMenu: React.FC = () => {
   };
 
   const logOut = () => {
-    userLogOut();
-    refetchUser();
+    clearUser();
   };
 
   useEffect(() => {
@@ -71,7 +70,7 @@ const NavMenu: React.FC = () => {
       label: "Account",
       key: "account",
       icon: <UserOutlined />,
-      children: user
+      children: user?.isValid
         ? [
             {
               label: "Logout",

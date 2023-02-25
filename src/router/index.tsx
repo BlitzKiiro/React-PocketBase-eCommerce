@@ -9,8 +9,6 @@ import Root from "../pages/root";
 import UnAuthedRoute from "./UnAuthedRoute";
 import AuthedRoute from "./AuthedRoute";
 
-import { useEffect } from "react";
-
 const AppRouter = () => {
   const { user } = useAuth();
 

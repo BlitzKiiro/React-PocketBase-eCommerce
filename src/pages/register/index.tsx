@@ -14,24 +14,18 @@ import {
   message,
 } from "antd";
 
-import useAuth from "../../hooks/useAuth";
 import { useMutation } from "@tanstack/react-query";
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 const Register = () => {
-  const { refreshUser: refetchUser } = useAuth();
-
   const register = async ({ name, email, password }: any) => {
     await registerWithPassword({ name, email, password });
     await loginWithPassword({ email, password });
   };
 
   const registerMutation = useMutation(register, {
-    onSuccess: () => {
-      refetchUser();
-    },
     onError: (error: any) => {
       message.error({
         content: error.message,

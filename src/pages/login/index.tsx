@@ -14,17 +14,12 @@ import {
   message,
 } from "antd";
 import { useMutation } from "@tanstack/react-query";
-import useAuth from "../../hooks/useAuth";
 
 const { Content } = Layout;
 const { Title } = Typography;
 
 const LoginPage = () => {
-  const { refreshUser: refetchUser } = useAuth();
   const loginMutation = useMutation(loginWithPassword, {
-    onSuccess: () => {
-      refetchUser();
-    },
     onError: (error: any) => {
       message.error({
         content: error.message,
