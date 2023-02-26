@@ -22,7 +22,7 @@ const { Title, Text } = Typography;
 const NavMenu: React.FC = () => {
   const { themeMode, setTheme } = useTheme();
   const { user, clearUser } = useAuth();
-  const { data: cartItems } = useQuery(
+  const { data } = useQuery(
     ["cartItems", user?.isValid, user?.model?.id],
     getCartItems
   );
@@ -64,7 +64,7 @@ const NavMenu: React.FC = () => {
       label: <Link to={"/cart"}>Cart</Link>,
       key: "cart",
       icon: (
-        <Badge count={cartItems?.length} size='small'>
+        <Badge count={data?.totalItems} size='small'>
           <ShoppingCartOutlined />
         </Badge>
       ),

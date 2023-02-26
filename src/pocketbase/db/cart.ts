@@ -12,7 +12,7 @@ const getTotalInvoice = (cartItems: CartItemRecord[]) => {
   cartItems.forEach((item) => {
     total += (item.expand?.item as ProductRecord).price * item.quantity;
   });
-  return total;
+  return total.toFixed(2);
 };
 
 const getTotalItems = (cartItems: CartItemRecord[]) => {
@@ -29,7 +29,7 @@ export const getCartItems = async ({
   [string, boolean | undefined, string | null | undefined]
 >): Promise<{
   totalItems: number;
-  totalInvoice: number;
+  totalInvoice: string;
   cartItems: CartItemRecord[];
 }> => {
   const isOnline = queryKey[1];
@@ -54,5 +54,35 @@ export const getCartItems = async ({
   } else {
     const localCartItems = JSON.parse(localStorage.getItem("cart") ?? "[]");
     return localCartItems;
+  }
+};
+
+export const addItemToCart = async (query: {
+  isOnline: boolean | undefined;
+  itemID: string;
+  product: ProductRecord;
+  quantity: number;
+  userId?: string;
+}) => {
+  if (query.isOnline) {
+    const data = {
+      user: query.userId,
+      item: query.itemID,
+      quantity: query.quantity,
+    };
+    await pb.collection("cart").create(data);
+  } else {
+    const data = {
+      item: query.itemID,
+      quantity: query.quantity,
+      expand: {
+        item: query.product,
+      },
+    };
+    const localCartItems = JSON.parse(
+      localStorage.getItem("cart") ?? "[]"
+    ) as any[];
+    localCartItems.push(data);
+    localStorage.setItem("cart", JSON.stringify(localCartItems));
   }
 };

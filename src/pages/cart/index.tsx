@@ -7,8 +7,7 @@ import { Typography, Row, Col } from "antd";
 import LoadingProducts from "../../components/Products/Loading";
 import Invoice from "../../components/cart/invoice";
 import CartItemsList from "../../components/cart/item list";
-
-const { Title, Text } = Typography;
+import EmptyCart from "../../components/cart/empty";
 
 const CartPage = () => {
   const { user } = useAuth();
@@ -20,7 +19,8 @@ const CartPage = () => {
   return (
     <Row className={styles.main} justify={"center"}>
       <LoadingProducts loading={isLoading} />
-      {data && (
+      {data?.cartItems.length == 0 && <EmptyCart />}
+      {data && data?.cartItems.length > 0 && (
         <>
           <Col span={24} md={12} className={styles.list}>
             <CartItemsList

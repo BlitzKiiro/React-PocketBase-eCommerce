@@ -8,7 +8,7 @@ const { Title, Text } = Typography;
 interface propTypes {
   cartItems: CartItemRecord[];
   totalItems: number;
-  totalInvoice: number;
+  totalInvoice: string;
 }
 
 const Invoice = ({ cartItems, totalInvoice, totalItems }: propTypes) => {
