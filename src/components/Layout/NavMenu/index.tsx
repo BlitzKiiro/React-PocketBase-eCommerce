@@ -1,10 +1,8 @@
 import React, { useEffect } from "react";
 import styles from "./styles.module.css";
-
 import useTheme from "../../../hooks/useTheme";
 import { Link } from "react-router-dom";
 import {
-  HeartOutlined,
   UserOutlined,
   ShoppingCartOutlined,
   HomeOutlined,
@@ -16,12 +14,18 @@ import { MenuProps } from "antd";
 import { Menu, Typography, Badge } from "antd";
 import { lightAnimation, darkAnimation } from "./animations";
 import useAuth from "../../../hooks/useAuth";
+import { useQuery } from "@tanstack/react-query";
+import { getCartItems } from "../../../pocketbase/db/cart";
 
 const { Title, Text } = Typography;
 
 const NavMenu: React.FC = () => {
   const { themeMode, setTheme } = useTheme();
   const { user, clearUser } = useAuth();
+  const { data: cartItems } = useQuery(
+    ["cartItems", user?.isValid, user?.model?.id],
+    getCartItems
+  );
 
   const toggleTheme = () => {
     if (themeMode == "dark") setTheme("light");
@@ -57,14 +61,13 @@ const NavMenu: React.FC = () => {
     },
 
     {
-      label: "Wish List",
-      key: "wish",
-      icon: <HeartOutlined />,
-    },
-    {
-      label: "Cart",
+      label: <Link to={"/cart"}>Cart</Link>,
       key: "cart",
-      icon: <ShoppingCartOutlined />,
+      icon: (
+        <Badge count={cartItems?.length} size='small'>
+          <ShoppingCartOutlined />
+        </Badge>
+      ),
     },
     {
       label: "Account",

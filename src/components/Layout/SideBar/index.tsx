@@ -36,7 +36,7 @@ function getItem(
 
 const categoriesItems: MenuProps["items"] = [
   getItem(
-    <Title level={5}>Categoris</Title>,
+    <Title level={5}>Browse Categoris</Title>,
     "categories",
     <></>,
     [

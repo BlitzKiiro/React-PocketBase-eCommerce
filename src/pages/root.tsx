@@ -8,14 +8,11 @@ const { Header, Footer, Sider, Content } = Layout;
 
 const Root = () => {
   return (
-    <Layout>
+    <Layout id='layout'>
       <Header id='header'>
         <NavMenu />
       </Header>
       <Layout hasSider>
-        <Sider width={300} breakpoint='lg' collapsedWidth={0}>
-          <SideBar />
-        </Sider>
         <Content>
           <Outlet />
         </Content>

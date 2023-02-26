@@ -13,6 +13,6 @@
 }
 
 .navmenu {
-  padding-left: 40px;
-  padding-right: 40px;
+  padding: 0px 60px;
+  justify-content: space-around;
 }

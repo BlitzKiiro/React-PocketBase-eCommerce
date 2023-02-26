@@ -8,6 +8,7 @@ import Register from "../pages/register";
 import Root from "../pages/root";
 import UnAuthedRoute from "./UnAuthedRoute";
 import AuthedRoute from "./AuthedRoute";
+import CartPage from "../pages/cart";
 
 const AppRouter = () => {
   const { user } = useAuth();
@@ -29,6 +30,10 @@ const AppRouter = () => {
         {
           path: "/product/:id",
           element: <ProductDetails />,
+        },
+        {
+          path: "/cart",
+          element: <CartPage />,
         },
       ],
     },

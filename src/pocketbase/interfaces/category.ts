@@ -1,6 +1,6 @@
 import { Record } from "pocketbase";
 
-export interface Category {
+interface Category {
   id: string;
   created: string;
   updated: string;

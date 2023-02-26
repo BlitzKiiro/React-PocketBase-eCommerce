@@ -1,7 +1,7 @@
 import { Record } from "pocketbase";
 import { CategoryRecord } from "./category";
 
-export interface Product {
+interface Product {
   id: string;
   created: string;
   updated: string;
