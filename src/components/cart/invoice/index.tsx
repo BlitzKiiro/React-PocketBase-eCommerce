@@ -7,17 +7,11 @@ const { Title, Text } = Typography;
 
 interface propTypes {
   cartItems: CartItemRecord[];
+  totalItems: number;
+  totalInvoice: number;
 }
 
-const getTotalInvoice = (cartItems: CartItemRecord[]) => {
-  let total = 0;
-  cartItems.forEach((item) => {
-    total += (item.expand?.item as ProductRecord).price * item.quantity;
-  });
-  return total;
-};
-
-const Invoice = ({ cartItems }: propTypes) => {
+const Invoice = ({ cartItems, totalInvoice, totalItems }: propTypes) => {
   return (
     <Card>
       <Row align={"middle"} gutter={[0, 100]}>
@@ -30,13 +24,13 @@ const Invoice = ({ cartItems }: propTypes) => {
               </Text>
             </Space>
 
-            <Title level={2}>{getTotalInvoice(cartItems)} EGP</Title>
+            <Title level={2}>{totalInvoice} EGP</Title>
           </Row>
           <Divider />
           <Row justify={"space-between"}>
-            <Text type='secondary'>Subtotal ({cartItems.length} items)</Text>
+            <Text type='secondary'>Subtotal ({totalItems})</Text>
 
-            <Text>{getTotalInvoice(cartItems)} EGP</Text>
+            <Text>{totalInvoice} EGP</Text>
           </Row>
           <Row justify={"space-between"}>
             <Text type='secondary'>Shipping</Text>

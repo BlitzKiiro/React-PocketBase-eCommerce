@@ -7,14 +7,15 @@ const { Title, Text } = Typography;
 
 interface propTypes {
   cartItems: CartItemRecord[];
+  totalItems: number;
 }
 
-const CartItemsList = ({ cartItems }: propTypes) => {
+const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
   return (
     <Space direction='vertical'>
       <Space>
         <Title level={1}>Cart</Title>
-        <Text type='secondary'>({cartItems.length} items)</Text>
+        <Text type='secondary'>({totalItems} items)</Text>
       </Space>
       <Space direction='vertical' size={20}>
         {cartItems.map((item, index) => {
@@ -26,8 +27,8 @@ const CartItemsList = ({ cartItems }: propTypes) => {
                 height={200}
                 src={(item.expand?.item as ProductRecord).img}
               ></Image>
-              <Space direction='vertical'>
-                <Space direction='vertical' size={30}>
+              <Space direction='vertical' size={30}>
+                <Space direction='vertical'>
                   <Text>{product.name}</Text>
                   <Title level={2}>
                     {product.price} <Text>EGP</Text>

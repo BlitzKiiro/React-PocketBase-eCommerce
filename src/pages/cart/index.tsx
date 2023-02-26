@@ -12,7 +12,7 @@ const { Title, Text } = Typography;
 
 const CartPage = () => {
   const { user } = useAuth();
-  const { data: cartItems, isLoading } = useQuery(
+  const { data, isLoading } = useQuery(
     ["cartItems", user?.isValid, user?.model?.id],
     getCartItems
   );
@@ -20,13 +20,20 @@ const CartPage = () => {
   return (
     <Row className={styles.main} justify={"center"}>
       <LoadingProducts loading={isLoading} />
-      {cartItems && (
+      {data && (
         <>
           <Col span={24} md={12} className={styles.list}>
-            <CartItemsList cartItems={cartItems} />
+            <CartItemsList
+              cartItems={data.cartItems}
+              totalItems={data.totalItems}
+            />
           </Col>
           <Col span={24} md={8}>
-            <Invoice cartItems={cartItems} />
+            <Invoice
+              cartItems={data.cartItems}
+              totalInvoice={data.totalInvoice}
+              totalItems={data.totalItems}
+            />
           </Col>
         </>
       )}
