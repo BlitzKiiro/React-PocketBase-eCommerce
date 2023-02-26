@@ -65,12 +65,23 @@ export const addItemToCart = async (query: {
   userId?: string;
 }) => {
   if (query.isOnline) {
-    const data = {
-      user: query.userId,
-      item: query.itemID,
-      quantity: query.quantity,
-    };
-    await pb.collection("cart").create(data);
+    try {
+      const record: CartItemRecord = await pb
+        .collection("cart")
+        .getFirstListItem(`user="${query.userId}" && item="${query.itemID}" `);
+      await pb.collection("cart").update(record.id as string, {
+        "quantity+": query.quantity,
+      });
+    } catch (error: any) {
+      if (error.status == 404) {
+        const data = {
+          user: query.userId,
+          item: query.itemID,
+          quantity: query.quantity,
+        };
+        await pb.collection("cart").create(data);
+      } else throw new Error(error.message);
+    }
   } else {
     const data = {
       item: query.itemID,
