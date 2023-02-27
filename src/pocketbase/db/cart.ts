@@ -97,3 +97,7 @@ export const addItemToCart = async (query: {
     localStorage.setItem("cart", JSON.stringify(localCartItems));
   }
 };
+
+export const removeItemFromCart = async (query: { itemID: string }) => {
+  await pb.collection("cart").delete(query.itemID);
+};

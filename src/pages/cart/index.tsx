@@ -22,13 +22,13 @@ const CartPage = () => {
       {data?.cartItems.length == 0 && <EmptyCart />}
       {data && data?.cartItems.length > 0 && (
         <>
-          <Col span={24} md={12} className={styles.list}>
+          <Col span={22} md={14} className={styles.list}>
             <CartItemsList
               cartItems={data.cartItems}
               totalItems={data.totalItems}
             />
           </Col>
-          <Col span={24} md={8}>
+          <Col span={22} md={8}>
             <Invoice
               cartItems={data.cartItems}
               totalInvoice={data.totalInvoice}
