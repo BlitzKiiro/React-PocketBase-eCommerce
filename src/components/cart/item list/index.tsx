@@ -28,9 +28,9 @@ const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
   const queryClient = useQueryClient();
   const removeMutation = useMutation(removeItemFromCart);
 
-  const handleItemRemove = (id: string) => {
+  const handleItemRemove = (id: string, productID: string) => {
     removeMutation.mutate(
-      { itemID: id },
+      { itemID: id, isonline: user?.isValid, productID },
       {
         onSuccess: () => {
           queryClient.invalidateQueries([
@@ -60,7 +60,7 @@ const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
           {cartItems.map((item, index) => {
             const product = item.expand?.item as ProductRecord;
             return (
-              <Col span={24}>
+              <Col span={24} key={index}>
                 <Row key={index}>
                   <Col span={5}>
                     <Image
@@ -99,14 +99,14 @@ const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
                           <Button
                             type='ghost'
                             onClick={() => {
-                              handleItemRemove(item.id as string);
+                              handleItemRemove(item.id as string, item.item);
                             }}
                             loading={
                               removeMutation.isLoading &&
                               removeMutation.variables?.itemID == item.id
                             }
+                            icon={<DeleteOutlined />}
                           >
-                            <DeleteOutlined />
                             Remove
                           </Button>
                         </Space>

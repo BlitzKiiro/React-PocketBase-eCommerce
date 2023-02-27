@@ -53,7 +53,9 @@ export const getCartItems = async ({
     return { cartItems: items, totalItems, totalInvoice };
   } else {
     const localCartItems = JSON.parse(localStorage.getItem("cart") ?? "[]");
-    return localCartItems;
+    const totalItems = getTotalItems(localCartItems);
+    const totalInvoice = getTotalInvoice(localCartItems);
+    return { cartItems: localCartItems, totalItems, totalInvoice };
   }
 };
 
@@ -83,21 +85,45 @@ export const addItemToCart = async (query: {
       } else throw new Error(error.message);
     }
   } else {
-    const data = {
-      item: query.itemID,
-      quantity: query.quantity,
-      expand: {
-        item: query.product,
-      },
-    };
     const localCartItems = JSON.parse(
       localStorage.getItem("cart") ?? "[]"
     ) as any[];
-    localCartItems.push(data);
+
+    const existingItemIndex = localCartItems.findIndex((item) => {
+      return item.item == query.itemID;
+    });
+    console.log(existingItemIndex);
+
+    if (existingItemIndex != -1) {
+      localCartItems[existingItemIndex].quantity += query.quantity;
+    } else {
+      const data = {
+        item: query.itemID,
+        quantity: query.quantity,
+        expand: {
+          item: query.product,
+        },
+      };
+      localCartItems.push(data);
+    }
+
     localStorage.setItem("cart", JSON.stringify(localCartItems));
   }
 };
 
-export const removeItemFromCart = async (query: { itemID: string }) => {
-  await pb.collection("cart").delete(query.itemID);
+export const removeItemFromCart = async (query: {
+  itemID: string;
+  isonline?: boolean;
+  productID?: string;
+}) => {
+  if (query.isonline) {
+    await pb.collection("cart").delete(query.itemID);
+  } else {
+    const localCart = JSON.parse(localStorage.getItem("cart")!) as any[];
+    const newCart = localCart.filter((item) => {
+      return item.item != query.productID;
+    });
+
+    localStorage.setItem("cart", JSON.stringify(newCart));
+  }
 };
