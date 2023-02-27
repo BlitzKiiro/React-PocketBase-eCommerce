@@ -22,7 +22,7 @@ export default function ErrorPage() {
             title={error.statusText || error.message}
             subTitle='Sorry, an unexpected error has occurred.'
             extra={
-              <Link to='/'>
+              <Link reloadDocument to='/'>
                 <Button type='primary'>Back Home</Button>
               </Link>
             }

@@ -31,7 +31,7 @@ const ProductDetails = () => {
   const { id } = useParams();
   const { user } = useAuth();
   const queryClient = useQueryClient();
-  const productQuery = useQuery(["product", id!], getProdcutByID);
+  const productQuery = useQuery(["product", id!], getProdcutByID, { retry: 2 });
   const cartMutation = useMutation(addItemToCart, {
     onSuccess: () => {
       queryClient.invalidateQueries([

@@ -92,7 +92,6 @@ export const addItemToCart = async (query: {
     const existingItemIndex = localCartItems.findIndex((item) => {
       return item.item == query.itemID;
     });
-    console.log(existingItemIndex);
 
     if (existingItemIndex != -1) {
       localCartItems[existingItemIndex].quantity += query.quantity;
@@ -112,12 +111,12 @@ export const addItemToCart = async (query: {
 };
 
 export const removeItemFromCart = async (query: {
-  itemID: string;
+  itemID?: string;
   isonline?: boolean;
   productID?: string;
 }) => {
   if (query.isonline) {
-    await pb.collection("cart").delete(query.itemID);
+    await pb.collection("cart").delete(query.itemID as string);
   } else {
     const localCart = JSON.parse(localStorage.getItem("cart")!) as any[];
     const newCart = localCart.filter((item) => {
@@ -125,5 +124,28 @@ export const removeItemFromCart = async (query: {
     });
 
     localStorage.setItem("cart", JSON.stringify(newCart));
+  }
+};
+
+export const updateItemQuantity = async (query: {
+  itemID?: string;
+  quantity: number;
+  isonline?: boolean;
+  productID?: string;
+}) => {
+  if (query.isonline) {
+    await pb.collection("cart").update(query.itemID as string, {
+      quantity: query.quantity,
+    });
+  } else {
+    const localCartItems = JSON.parse(
+      localStorage.getItem("cart") as string
+    ) as any[];
+    const existingItemIndex = localCartItems.findIndex((item) => {
+      return item.item == query.productID;
+    });
+
+    localCartItems[existingItemIndex].quantity = query.quantity;
+    localStorage.setItem("cart", JSON.stringify(localCartItems));
   }
 };

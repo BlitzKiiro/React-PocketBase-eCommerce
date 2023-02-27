@@ -14,7 +14,10 @@ import { ProductRecord } from "../../../pocketbase/interfaces/products";
 import { DeleteOutlined } from "@ant-design/icons";
 import useAuth from "../../../hooks/useAuth";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { removeItemFromCart } from "../../../pocketbase/db/cart";
+import {
+  removeItemFromCart,
+  updateItemQuantity,
+} from "../../../pocketbase/db/cart";
 
 const { Title, Text } = Typography;
 
@@ -27,8 +30,9 @@ const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
   const { user } = useAuth();
   const queryClient = useQueryClient();
   const removeMutation = useMutation(removeItemFromCart);
+  const updateMutation = useMutation(updateItemQuantity);
 
-  const handleItemRemove = (id: string, productID: string) => {
+  const handleItemRemove = (id: string | undefined, productID: string) => {
     removeMutation.mutate(
       { itemID: id, isonline: user?.isValid, productID },
       {
@@ -39,6 +43,28 @@ const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
             user?.model?.id,
           ]);
           message.success({ content: "Item removed from cart" });
+        },
+        onError: (error: any) => {
+          message.error(error.message);
+        },
+      }
+    );
+  };
+
+  const handleItemUpdate = (
+    id: string | undefined,
+    productID: string,
+    quantity: number
+  ) => {
+    updateMutation.mutate(
+      { itemID: id, quantity, isonline: user?.isValid, productID },
+      {
+        onSuccess: () => {
+          queryClient.invalidateQueries([
+            "cartItems",
+            user?.isValid,
+            user?.model?.id,
+          ]);
         },
         onError: (error: any) => {
           message.error(error.message);
@@ -84,6 +110,9 @@ const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
                               defaultValue={item.quantity}
                               min={1}
                               max={product.amount}
+                              onChange={(val) => {
+                                handleItemUpdate(item.id, item.item, val);
+                              }}
                             />
                             <Text type='secondary' italic>
                               (selected amount)
@@ -99,7 +128,7 @@ const CartItemsList = ({ cartItems, totalItems }: propTypes) => {
                           <Button
                             type='ghost'
                             onClick={() => {
-                              handleItemRemove(item.id as string, item.item);
+                              handleItemRemove(item.id, item.item);
                             }}
                             loading={
                               removeMutation.isLoading &&
