@@ -61,7 +61,10 @@ const ProductDetails = () => {
   };
 
   if (productQuery.isError) {
-    throw new Error("This product doesn't exist");
+    throw new Response(null, {
+      status: 404,
+      statusText: "This product doesn't exist",
+    });
   }
 
   return (
