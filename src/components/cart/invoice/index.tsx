@@ -6,12 +6,12 @@ import { ShoppingOutlined } from "@ant-design/icons";
 const { Title, Text } = Typography;
 
 interface propTypes {
-  cartItems: CartItemRecord[];
+
   totalItems: number;
   totalInvoice: string;
 }
 
-const Invoice = ({ cartItems, totalInvoice, totalItems }: propTypes) => {
+const Invoice = ({ totalInvoice, totalItems }: propTypes) => {
   return (
     <Card>
       <Row align={"middle"} gutter={[0, 100]}>

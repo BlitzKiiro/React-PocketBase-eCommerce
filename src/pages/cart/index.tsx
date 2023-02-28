@@ -30,7 +30,6 @@ const CartPage = () => {
           </Col>
           <Col span={22} md={8}>
             <Invoice
-              cartItems={data.cartItems}
               totalInvoice={data.totalInvoice}
               totalItems={data.totalItems}
             />
