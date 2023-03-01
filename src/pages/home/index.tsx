@@ -3,7 +3,7 @@ import { useState } from "react";
 import { ShopOutlined } from "@ant-design/icons";
 import { Layout, Typography, Row, Col } from "antd";
 import SideBar from "../../components/Layout/SideBar";
-import { getProductsList } from "../../pocketbase/db/products";
+import { getProductsList } from "../../pocketbase/routes/products";
 import { useQuery } from "@tanstack/react-query";
 import ProductCard from "../../components/Products/Card";
 import LoadingProducts from "../../components/Products/Loading";

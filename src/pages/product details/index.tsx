@@ -13,7 +13,7 @@ import {
   InputNumber,
   Card,
 } from "antd";
-import { getProdcutByID } from "../../pocketbase/db/products";
+import { getProdcutByID } from "../../pocketbase/routes/products";
 import {
   CarOutlined,
   LockOutlined,
@@ -22,7 +22,7 @@ import {
 } from "@ant-design/icons";
 import LoadingProducts from "../../components/Products/Loading";
 import useAuth from "../../hooks/useAuth";
-import { addItemToCart } from "../../pocketbase/db/cart";
+import { addItemToCart } from "../../pocketbase/routes/cart";
 import { ProductRecord } from "../../pocketbase/interfaces/products";
 
 const { Title, Text } = Typography;

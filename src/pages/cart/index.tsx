@@ -1,7 +1,7 @@
 import styles from "./styles.module.css";
 import useAuth from "../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import { getCartItems } from "../../pocketbase/db/cart";
+import { getCartItems } from "../../pocketbase/routes/cart";
 import { Typography, Row, Col } from "antd";
 
 import LoadingProducts from "../../components/Products/Loading";

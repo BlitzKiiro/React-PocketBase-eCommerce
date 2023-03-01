@@ -6,8 +6,8 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import {
   removeItemFromCart,
   updateItemQuantity,
-} from "../../../pocketbase/db/cart";
-import ListItem from "./List item";
+} from "../../../pocketbase/routes/cart";
+import ListItem from "../item";
 
 const { Title, Text } = Typography;
 

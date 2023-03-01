@@ -15,7 +15,7 @@ import { Menu, Typography, Badge } from "antd";
 import { lightAnimation, darkAnimation } from "./animations";
 import useAuth from "../../../hooks/useAuth";
 import { useQuery } from "@tanstack/react-query";
-import { getCartItems } from "../../../pocketbase/db/cart";
+import { getCartItems } from "../../../pocketbase/routes/cart";
 
 const { Title, Text } = Typography;
 
